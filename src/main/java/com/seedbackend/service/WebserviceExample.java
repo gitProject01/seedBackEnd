@@ -14,6 +14,9 @@ import javax.ws.rs.core.Response;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+
+import com.seedbackend.model.Indice;
+
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.Produces;
 
@@ -60,22 +63,17 @@ public class WebserviceExample {
 	public Response getMsgJson() throws JsonGenerationException, JsonMappingException, IOException {
 
 		ObjectMapper mapper = new ObjectMapper();
-
-		String jsonInString = mapper.writeValueAsString(serviceBean.bouchonDonnees().get(0));
-		String jsonInString1 = mapper.writeValueAsString(serviceBean.bouchonDonnees().get(1));
-		String jsonInString2 = mapper.writeValueAsString(serviceBean.bouchonDonnees().get(2));
-		String jsonInString3 = mapper.writeValueAsString(serviceBean.bouchonDonnees().get(3));
-		String jsonInString4 = mapper.writeValueAsString(serviceBean.bouchonDonnees().get(4));
-		String jsonInString5 = mapper.writeValueAsString(serviceBean.bouchonDonnees().get(5));
-		String jsonInString6 = mapper.writeValueAsString(serviceBean.bouchonDonnees().get(6));
-
-		String output = "[" + jsonInString + "," 
-				+ jsonInString1 + "," 
-				+ jsonInString2 + ","
-				+ jsonInString3 + ","
-				+ jsonInString4 + ","
-				+ jsonInString5 + ","
-				+ jsonInString6  + "]";
+		
+		String output = "[";
+		String jsonInString;
+		
+		for (Indice indice : serviceBean.bouchonDonnees()) {
+			jsonInString = mapper.writeValueAsString(indice);
+			output += jsonInString + ","; 
+		}
+		
+		
+		output = output.substring(0, output.length() - 1) + "]";
 
 		return Response
 				.status(200)
